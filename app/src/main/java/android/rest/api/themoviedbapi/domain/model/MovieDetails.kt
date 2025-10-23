@@ -11,6 +11,4 @@ data class MovieDetails(
     @SerializedName("poster_path") val posterPath:String,
     @SerializedName("vote_average")val voteAverage:Double,
     val genres:List<Genre>,
-
-
 )

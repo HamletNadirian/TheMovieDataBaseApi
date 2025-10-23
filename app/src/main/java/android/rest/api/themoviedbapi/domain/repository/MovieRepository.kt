@@ -8,13 +8,14 @@ class MovieRepository(private val dao: FavoriteMovieDao) {
 
     fun getFavoriteMovies(): Flow<List<Movie>> = dao.getAllFavoriteMovies()
 
-    suspend fun toggleFavorite(movie: Movie){
-        if(dao.isFavorite(movie.id)){
+    suspend fun toggleFavorite(movie: Movie) {
+        if (dao.isFavorite(movie.id)) {
             dao.deleteMovie(movie)
-        }else{
+        } else {
             dao.insertMovie(movie.copy(isFavorite = true))
         }
     }
+
     suspend fun isMovieFavorite(movieId: Int): Boolean = dao.isFavorite(movieId)
 
 }

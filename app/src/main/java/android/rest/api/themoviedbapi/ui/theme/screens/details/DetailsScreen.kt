@@ -153,13 +153,3 @@ fun DetailsScreen(
 
     }
 }
-
-@Composable
-fun FavoriteButton(isFavorite: Boolean, onFavoriteClick: () -> Unit) {
-    IconButton(onClick = onFavoriteClick) {
-        Icon(
-            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites"
-        )
-    }
-}

@@ -52,7 +52,7 @@ fun FavoriteScreen(navController: NavController? = null) {
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Нет избранных фильмов")
+                    Text("No favorite movies")
                 }
             }
         } else {

@@ -74,7 +74,6 @@ import androidx.compose.ui.graphics.Color
         }
     }
 
-
 @Preview
 @Composable
 fun BottomNavigationBarPreview() {
