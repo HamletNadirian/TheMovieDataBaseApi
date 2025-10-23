@@ -29,12 +29,13 @@ open class MovieViewModel @Inject constructor(
 
     private val _movieDetails = MutableStateFlow<MovieDetails?>(null)
     val movieDetails: StateFlow<MovieDetails?> = _movieDetails.asStateFlow()
-
+    private val _isCurrentMovieFavorite = MutableStateFlow(false)
     private val apiKey = BuildConfig.TMDB_API_KEY
 
     init {
         loadMovies()
     }
+
     fun loadMovies() {
         viewModelScope.launch {
             try {
@@ -54,6 +55,8 @@ open class MovieViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _movieDetails.value = RetrofitInstance.api.getMovieDetails(movieId, apiKey)
+                _isCurrentMovieFavorite.value = repository.isMovieFavorite(movieId)
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -64,12 +67,23 @@ open class MovieViewModel @Inject constructor(
         viewModelScope.launch {
             val currentMovies = _movies.value.toMutableList()
             val movieIndex = currentMovies.indexOfFirst { it.id == movieId }
+
             if (movieIndex != -1) {
                 val movie = currentMovies[movieIndex]
                 repository.toggleFavorite(movie)
                 currentMovies[movieIndex] = movie.copy(isFavorite = !movie.isFavorite)
                 _movies.value = currentMovies
+                _isCurrentMovieFavorite.value = !movie.isFavorite
             }
+        }
+    }
+
+    fun refreshFavoriteStatus() {
+        viewModelScope.launch {
+            val updatedMovies = _movies.value.map { movie ->
+                movie.copy(isFavorite = repository.isMovieFavorite(movie.id))
+            }
+            _movies.value = updatedMovies
         }
     }
 }

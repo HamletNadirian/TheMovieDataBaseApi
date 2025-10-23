@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,11 +25,15 @@ import androidx.navigation.compose.rememberNavController
 
 
 @Composable
-fun MovieScreen(navController: NavController,) {
+fun MovieScreen(navController: NavController) {
 
     val viewModel: MovieViewModel = hiltViewModel()
     val movies by viewModel.movies.collectAsState()
+    val navBackStackEntry = navController.currentBackStackEntry
 
+    LaunchedEffect(navBackStackEntry) {
+        viewModel.refreshFavoriteStatus()
+    }
     Scaffold { paddingValues ->
         if (movies.isEmpty()) {
             Box(

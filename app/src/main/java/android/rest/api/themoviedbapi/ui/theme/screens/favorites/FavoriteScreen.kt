@@ -31,9 +31,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 @Composable
-fun FavoriteScreen(navController: NavController? = null){
+fun FavoriteScreen(navController: NavController? = null) {
     val context = LocalContext.current
-    val viewModel: MovieViewModel  = hiltViewModel()
+    val viewModel: MovieViewModel = hiltViewModel()
 
     val favoriteMovies by viewModel.favoriteMovies.collectAsState()
 
@@ -46,7 +46,11 @@ fun FavoriteScreen(navController: NavController? = null){
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Default.Favorite, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                    Icon(
+                        Icons.Default.Favorite,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text("Нет избранных фильмов")
                 }

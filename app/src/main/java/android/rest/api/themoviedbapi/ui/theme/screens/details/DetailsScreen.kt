@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +22,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,20 +33,26 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import androidx.compose.material3.*
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
     navController: NavController,
     movieId: Int,
+
 ) {
     val viewModel: MovieViewModel = hiltViewModel()
     LaunchedEffect(movieId) {
         viewModel.loadMovieDetails(movieId)
     }
     val movieDetails by viewModel.movieDetails.collectAsState()
+    val movies by viewModel.movies.collectAsState()
 
+    val currentMovie = movies.find { it.id == movieId }
+    val isFavorite = currentMovie?.isFavorite ?: false
     Scaffold(
         topBar = {
             TopAppBar(
@@ -80,6 +89,17 @@ fun DetailsScreen(
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold
                         )
+                        IconButton(
+                            onClick = { viewModel.toggleFavorite(movieId) },
+                            modifier = Modifier.size(48.dp)
+                        ) {
+                            Icon(
+                                imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
+                                contentDescription = null,
+                                tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
                         Text(
                             "Rank: ${details.voteAverage}/10",
                             style = MaterialTheme.typography.bodyMedium,
@@ -119,6 +139,8 @@ fun DetailsScreen(
                     text = details.overview,
                     style = MaterialTheme.typography.bodyMedium,
                 )
+
+
             }
         } ?: run {
             Box(
@@ -127,7 +149,17 @@ fun DetailsScreen(
             ) {
                 CircularProgressIndicator()
             }
-
         }
+
+    }
+}
+
+@Composable
+fun FavoriteButton(isFavorite: Boolean, onFavoriteClick: () -> Unit) {
+    IconButton(onClick = onFavoriteClick) {
+        Icon(
+            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites"
+        )
     }
 }
