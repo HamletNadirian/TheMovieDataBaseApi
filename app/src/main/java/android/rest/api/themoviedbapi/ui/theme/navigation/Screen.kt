@@ -1,9 +1,10 @@
 package android.rest.api.themoviedbapi.ui.theme.navigation
 
-enum class Screen(val route: String) {
-    HOME("home"),
-    FAVORITE("favorite"),
-    DETAILS("details/{movieId}") {
+sealed class Screen(val route: String) {
+    object HOME : Screen("home")
+    object FAVORITE : Screen("favorite")
+
+    object DETAILS : Screen("details/{movieId}") {
         fun createRoute(movieId: Int) = "details/$movieId"
     }
 }

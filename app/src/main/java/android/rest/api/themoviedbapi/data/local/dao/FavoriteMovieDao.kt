@@ -23,6 +23,4 @@ interface FavoriteMovieDao {
     @Query("SELECT EXISTS(SELECT 1 FROM favorite_movies WHERE id = :movieId)")
     suspend fun isFavorite(movieId: Int): Boolean
 
-    @Query("UPDATE favorite_movies SET isFavorite = :isFavorite WHERE id = :movieId")
-    suspend fun updateFavorite(movieId: Int, isFavorite: Boolean)
 }

@@ -2,6 +2,7 @@ package android.rest.api.themoviedbapi.ui.theme.screens.home
 
 import android.rest.api.themoviedbapi.ui.theme.screens.home.MovieViewModel
 import android.rest.api.themoviedbapi.ui.theme.components.MovieCard
+import android.rest.api.themoviedbapi.ui.theme.navigation.Screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -53,7 +54,9 @@ fun MovieScreen(navController: NavController) {
                 items(movies) { movie ->
                     MovieCard(
                         movie = movie,
-                        onMovieClick = { navController.navigate("details/${movie.id}") },
+                        onMovieClick = {
+                            navController.navigate(Screen.DETAILS.createRoute(movie.id))
+                        },
                         onFavoriteClick = { viewModel.toggleFavorite(movie.id) }
                     )
                 }

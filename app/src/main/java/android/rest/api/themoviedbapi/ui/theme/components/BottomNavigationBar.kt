@@ -36,7 +36,7 @@ import androidx.compose.ui.graphics.Color
                 route = Screen.HOME.route
             ),
             NavigationItem(
-                title = "Profile",
+                title = "Favorite",
                 icon = Icons.Filled.Favorite,
                 route = Screen.FAVORITE.route
             )

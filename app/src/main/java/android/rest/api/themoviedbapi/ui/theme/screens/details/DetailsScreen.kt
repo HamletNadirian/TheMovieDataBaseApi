@@ -43,7 +43,7 @@ fun DetailsScreen(
     navController: NavController,
     movieId: Int,
 
-) {
+    ) {
     val viewModel: MovieViewModel = hiltViewModel()
     LaunchedEffect(movieId) {
         viewModel.loadMovieDetails(movieId)
@@ -73,7 +73,6 @@ fun DetailsScreen(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
@@ -96,7 +95,7 @@ fun DetailsScreen(
                             Icon(
                                 imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = null,
-                                tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                                tint = if (isFavorite) Color.Red else Color.Gray,
                                 modifier = Modifier.size(32.dp)
                             )
                         }
@@ -109,12 +108,10 @@ fun DetailsScreen(
                             "Date release: ${details.releaseDate}",
                             style = MaterialTheme.typography.bodyMedium,
                         )
-                        if (details.runtime != null) {
-                            Text(
-                                "Duration: ${details.runtime} minutes",
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                        }
+                        Text(
+                            "Duration: ${details.runtime} minutes",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                 }
                 Text(
@@ -139,8 +136,6 @@ fun DetailsScreen(
                     text = details.overview,
                     style = MaterialTheme.typography.bodyMedium,
                 )
-
-
             }
         } ?: run {
             Box(
